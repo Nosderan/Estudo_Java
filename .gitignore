@@ -1,60 +1,69 @@
 import java.util.Scanner;
 
-public class Bankaccount 
+public class Bank
 {
-	static int escolha1;
-	static private double saldo;
-	static Bankaccount user = new Bankaccount();
-	static Scanner ler = new Scanner(System.in);
+	int escolha1;
+	private double saldo;
+	Bank user = new Bank();
+	Scanner ler = new Scanner(System.in);
 	
-    static String welcome = "Bem vindo ao Banco X\n\nO que deseja?\n\n1_Depósito\n2_Saque\n3_Consulta de saldo\n4_Sair\n";  
-    static String msgerror = "\nERROR: limite sua escolha a umas das 4 opções";
+    String welcome = "Bem vindo ao Banco X\n\nO que deseja?\n\n1_Depósito\n2_Saque\n3_Consulta de saldo\n4_Sair\n";  
+    String msgerror = "\nERROR: limite sua escolha a umas das 4 opções";
     String msgsaldo = "\nSaldo atual: R$ ";
-    static String msgcont = "\nMais alguma transação?\n\n[Yes]\n[No]\n\n";
   
-public Bankaccount()
+    public Bank()
 	{
 		saldo = 0;
 	}
   
-public Bankaccount(double saldoInicial)
-	{
+    public Bank(double saldoInicial)
+    {
 		saldo = saldoInicial;
 	}
   
-public void deposit(double valor)
+    public void deposit(double valor)
 	{
 		double newSaldo = saldo + valor;
 		saldo = newSaldo;
 	}
   
-public void saque(double valor)
+    public void saque(double valor)
 	{
 		double newSaldo = saldo - valor;
 		saldo = newSaldo;
 	}
 
-public double consultaSaldo()
+    public double consultaSaldo()
 	{
 		return saldo;
 	}
 
-public void processDeposit(int escolha)
+    public void processDeposit(int escolha)
+
 	{
 		if (escolha == 1)
 		{
 			System.out.print("\nInsira o valor do depósito: R$ ");
-			double deposito = ler.nextDouble();
-			user.deposit(deposito);
-			System.out.println(msgsaldo + user.consultaSaldo() + "\n----------------------1");
+			double deposito1 = ler.nextDouble();
+			if(deposito1 < 0)
+			{
+				System.out.println("\nNão possível fazer a transação. MOTIVO: valor do depósito menor que 0.");
+				return;
+			}
+			user.deposit(deposito1);
+			System.out.println(msgsaldo + user.consultaSaldo() + "\n----------------------");
 		}
      
 		else if(escolha == 2)
 		{
 			System.out.print("\nInsira o valor do saque: R$ ");
-			//if(user.consultaSaldo())
-			double saque = ler.nextDouble();
-			user.saque(saque);
+			double saque1 = ler.nextDouble();
+			if(saque1 > saldo)
+			{
+				System.out.println("\nNão possível fazer a transação. MOTIVO: valor do saque maior que seu saldo atual.");
+				return;
+			}
+			user.saque(saque1);
 			System.out.println(msgsaldo + user.consultaSaldo() + "\n----------------------");
 		}
       
@@ -74,36 +83,44 @@ public void processDeposit(int escolha)
 		{
 			System.out.println(msgerror + welcome);
 		}
+		
 	}
-  
-public static void main(String[] args)
-	{
+
+}
+
+public class Banco
+{
+    static Bank user1 = new Bank();
+    static int escolha1;
+    static Scanner ler1 = new Scanner(System.in);
+	 
+    static String welcome = "Bem vindo ao Banco X\n\nO que deseja? 1_Cadastrar\n2_Logar";  
+    static String msgerror = "\nERROR: limite sua escolha a umas das 4 opções";
+    String msgsaldo = "\nSaldo atual: R$ ";
+    static String msgcont = "\nMais alguma transação?\n\n[Yes]\n[No]\n\n";
+
+    public static void main(String[] args)
+    {
 		while(true)
 		{
 			System.out.println(welcome);
    
-			escolha1 = ler.nextInt();
+			escolha1 = ler1.nextInt();
     
-			user.processDeposit(escolha1);
+			user1.processDeposit(escolha1);
  
 			System.out.printf(msgcont);
 			
-			String continua = ler.next();
+			String continua = ler1.next();
  
 			if("Yes".equals(continua))
-			{
 				System.out.println("----------------------");
-			}
 
 			else if("No".equals(continua))
-			{
 				return;
-			}
 	
 			else
-			{
 				System.out.println(msgerror);
-			}
-		}  
+		}
 	}
 }
